@@ -18,6 +18,7 @@ namespace LibraryInventorySystem
         public const string BOOK_AUTHOR_NAME = "Author";
         
         #region Exit Codes
+        public const string USER = "user";
         public const int ERROR_SUCCESS = 0;
         public const int ERROR_BAD_ARGUMENTS = 0xA0;
         public const int ERROR_ARITHMETIC_OVERFLOW = 0x216;

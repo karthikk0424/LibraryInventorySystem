@@ -34,6 +34,7 @@ namespace LibraryInventorySystem.Books
             root.Add(new XAttribute(Constants.BOOK_AUTHOR_NAME, authorName));
 
             //Add as element
+	    // tEST
             //root.Add(new XElement(Constants.BOOK_NAME, bookName));
             //root.Add(new XElement(Constants.BOOK_SERIAL_NUMBER, serialNumber));
             //root.Add(new XElement(Constants.BOOK_AUTHOR_NAME, authorName));
@@ -180,7 +181,7 @@ namespace LibraryInventorySystem.Books
             }
         }
 
-        public void RequestBook(string BookName, string AuthorName, int serial = 0)
+        public static void RequestBook(string BookName, string AuthorName, int serial = 0)
         { 
         
         }
