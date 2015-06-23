@@ -23,7 +23,7 @@ namespace LibraryInventorySystem.View
             };
         }
 
-        private const string NEW_APPROVALS = "(new)";
+        private const string NEW_APPROVALS = "(new)"; // Make this appear if new approvals are required
         public static void Display()
         {
             Console.WriteLine("\nAdmin Menu");
