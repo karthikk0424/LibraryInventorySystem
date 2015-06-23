@@ -265,12 +265,18 @@ namespace LibraryInventorySystem.Books
 
         public static void ListAllAwaitingApprovals()
         {
+            XmlNodeList nodeList = LibraryController.GetXMLNodeList(Constants.XML_NODE_APPROVALS);
+            if (nodeList.Count == 0)
+            {
+                Console.WriteLine("\nThere is nothing awaiting for approval");
+                return;
+            }
             string[] rowToPrint = new string[] { "Book Name", "Serial", "Author name" };
             Utils.PrintRow(rowToPrint);
             rowToPrint = new string[] {"-----------------------------------------------------------------------------------------------------------" };
             Utils.PrintRow(rowToPrint);
 
-            foreach (XmlNode node in LibraryController.GetXMLNodeList(Constants.XML_NODE_APPROVALS))
+            foreach (XmlNode node in nodeList)
             {
                 if (node.Name == Constants.XML_NODE_APPROVALS)
                 {
@@ -280,6 +286,39 @@ namespace LibraryInventorySystem.Books
                         node.Attributes[Constants.BOOK_AUTHOR_NAME].Value
                     };
                     Utils.PrintRow(rowToPrint);
+                }
+            }
+
+            Console.WriteLine("\n\nEnter serial number to approve (1 to approve all): ");
+            int serial = Utils.OptionSelection(9999);
+
+            XmlDocument document = LibraryController.LoadedDocument();
+            foreach (XmlNode node in LibraryController.GetXMLNodeList())
+            {
+                if (node.Attributes[Constants.BOOK_SERIAL_NUMBER].Value == serial.ToString())
+                {
+                    int count = Int32.Parse(node.Attributes[Constants.BOOK_AVAILABILITY].Value);
+                    count = count - 1;
+                    node.Attributes[Constants.BOOK_AVAILABILITY].Value = count.ToString();
+
+                    XmlNodeList nodes = LibraryController.GetXMLNodeList(Constants.XML_NODE_APPROVALS);
+                    for (int i = 0; i < nodes.Count; i++)
+                    {
+                        if (nodes[i].Attributes[Constants.BOOK_SERIAL_NUMBER].Value == serial.ToString())
+                        {
+                            nodes[i].ParentNode.RemoveChild(nodes[i]);
+                            LibraryController.SaveDocument();
+                        }
+                    }
+
+                    //foreach (XmlNode a_node in LibraryController.GetXMLNodeList(Constants.XML_NODE_APPROVALS))
+                    //{
+                    //    if (node.Attributes[Constants.BOOK_SERIAL_NUMBER].Value == serial.ToString())
+                    //    {
+                    //        a_node.ParentNode.RemoveChild(a_node);
+                    //        LibraryController.SaveDocument();
+                    //    }
+                    //}
                 }
             }
         }
