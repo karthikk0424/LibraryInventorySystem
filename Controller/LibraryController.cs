@@ -28,6 +28,24 @@ namespace LibraryInventorySystem.Controller
             }
         }
 
+        private static XmlDocument m_document = null;
+
+        public static XmlDocument LoadedDocument()
+        {
+            if(m_document == null)
+            { 
+                m_document = new XmlDocument();                
+                m_document.Load(Constants.BOOKS_XML_FILE);
+                
+            }
+            return m_document;
+        }
+
+        public static XmlNodeList GetXMLNodeList(string XmlTagName = Constants.XML_ELEMENT_NODE)
+        {
+            return LoadedDocument().GetElementsByTagName(XmlTagName);
+        }
+
         public static void Init()
         {
             LoadXML();
@@ -35,15 +53,24 @@ namespace LibraryInventorySystem.Controller
 
         private static void LoadXML()
         {
-            if(!File.Exists(Constants.BOOKS_XML_FILE))
+            if (!File.Exists(Constants.BOOKS_XML_FILE))
             {
                 FileStream file = File.Create(Constants.BOOKS_XML_FILE);
                 file.Close();
-                CreateXMLData();
+                CreateDefaultXMLData();
             }
         }
 
-        public static void CreateXMLData()
+        public static void FlushXMLData()
+        {
+            XmlDocument document = LoadedDocument();
+            foreach (XmlNode node in GetXMLNodeList())
+            {
+                node.RemoveAll();
+            }
+        }
+
+        public static void CreateDefaultXMLData()
         {
             Book[] books = new Book[10];
             books[0] = new Book("Computer Networks", 2, 1101, "M John");
@@ -97,14 +124,14 @@ namespace LibraryInventorySystem.Controller
 
             Console.WriteLine("\nData file does not exist or corrupt");
             Console.WriteLine("1 - Recreate Data ");
-            Console.WriteLine("2 - Manually Fix Issue (not recommended)");
+            Console.WriteLine("2 - Quit application");
             Console.Write("\nEnter selection: ");
 
             int selection = Convert.ToInt32(Console.ReadLine());
             switch (selection)
             {
                 case 1:
-                    CreateXMLData();
+                    CreateDefaultXMLData();
                     break;
                 case 2:
                     Environment.Exit(Constants.ERROR_SUCCESS);
