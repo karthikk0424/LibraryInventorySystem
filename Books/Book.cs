@@ -4,6 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
+using LibraryInventorySystem.Controller;
+using System.Web.DynamicData;
+using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace LibraryInventorySystem.Books
 {
@@ -11,14 +15,11 @@ namespace LibraryInventorySystem.Books
     {
         public static void GetBookAvailability(int serial)
         {
-            // TUT
+            // Return the available number of books - M_Assignment
         }
 
         public static void Add()
         {
-            XDocument doc = XDocument.Load(Constants.BOOKS_XML_FILE);
-            XElement root = new XElement(Constants.XML_ELEMENT_NODE);
-
             Console.Write("Enter Book name: ");
             string bookName = Console.ReadLine();
 
@@ -28,18 +29,44 @@ namespace LibraryInventorySystem.Books
             Console.Write("Enter the Author name: ");
             string authorName = Console.ReadLine();
 
+            /*
+            XDocument doc = XDocument.Load(Constants.BOOKS_XML_FILE);
+            XElement root = new XElement(Constants.XML_ELEMENT_NODE);
+            //
             //Add as attribute
             root.Add(new XAttribute(Constants.BOOK_NAME, bookName));
             root.Add(new XAttribute(Constants.BOOK_SERIAL_NUMBER, serialNumber));
             root.Add(new XAttribute(Constants.BOOK_AUTHOR_NAME, authorName));
-
+            //
             //Add as element
-            //root.Add(new XElement(Constants.BOOK_NAME, bookName));
-            //root.Add(new XElement(Constants.BOOK_SERIAL_NUMBER, serialNumber));
-            //root.Add(new XElement(Constants.BOOK_AUTHOR_NAME, authorName));
-
+            root.Add(new XElement(Constants.BOOK_NAME, bookName));
+            root.Add(new XElement(Constants.BOOK_SERIAL_NUMBER, serialNumber));
+            root.Add(new XElement(Constants.BOOK_AUTHOR_NAME, authorName));
+            //
             doc.Element(Constants.XML_ROOT_ELEMENT).Add(root);
             doc.Save(Constants.BOOKS_XML_FILE);
+            */
+
+            XmlDocument document = LibraryController.LoadedDocument();
+            XmlElement root = document.CreateElement(Constants.XML_ELEMENT_NODE);
+
+            
+            XmlAttribute a_bookname = document.CreateAttribute(Constants.BOOK_NAME);
+            a_bookname.Value = bookName;
+            XmlAttribute a_serialNumber = document.CreateAttribute(Constants.BOOK_SERIAL_NUMBER);
+            a_serialNumber.Value = serialNumber;
+            XmlAttribute a_authorName = document.CreateAttribute(Constants.BOOK_AUTHOR_NAME);
+            a_authorName.Value = authorName;
+
+            root.Attributes.Append(a_bookname);
+            root.Attributes.Append(a_serialNumber);
+            root.Attributes.Append(a_authorName);
+
+            document.DocumentElement.AppendChild(root);
+            document.Save(Constants.BOOKS_XML_FILE);
+
+            //Find book and increament book count => A_Assignment
+
         }
 
         public static void Delete()
@@ -48,9 +75,8 @@ namespace LibraryInventorySystem.Books
             int serial = Convert.ToInt32(Console.ReadLine());
 
             //Deletion through loop
-            XmlDocument xdoc = new XmlDocument();
-            xdoc.Load(Constants.BOOKS_XML_FILE);
-            XmlNodeList nodes = xdoc.GetElementsByTagName(Constants.XML_ELEMENT_NODE);
+            XmlDocument xdoc = LibraryController.LoadedDocument();
+            XmlNodeList nodes = LibraryController.GetXMLNodeList();
             for (int i = 0; i < nodes.Count; i++)
             {
                 if (nodes[i].Attributes[Constants.BOOK_SERIAL_NUMBER].Value == serial.ToString())
@@ -61,7 +87,7 @@ namespace LibraryInventorySystem.Books
             }
 
             /*    
-            //Alternate deletion using LINQ
+            //Alternate deletion using LINQ SelectSingleNode
             XmlDocument xdoc = new XmlDocument();
             xdoc.Load("books.xml");
             XmlNode childtodelete = xdoc.SelectSingleNode("/Books/Book[Serial_Number=\"1100\"]");
@@ -79,10 +105,9 @@ namespace LibraryInventorySystem.Books
             string authorName = string.Empty;
             int count = 0;
 
-            XmlDocument document = Utils.LoadedDocument();
-            XmlNodeList nodes = document.GetElementsByTagName(Constants.XML_ELEMENT_NODE);
+            XmlDocument document = LibraryController.LoadedDocument();
             XmlNode selectedNode = null;
-            foreach (XmlNode node in nodes)
+            foreach (XmlNode node in LibraryController.GetXMLNodeList())
             {
                 if (node.Attributes[Constants.BOOK_SERIAL_NUMBER].Value == serial.ToString())
                 {
@@ -98,8 +123,9 @@ namespace LibraryInventorySystem.Books
             Console.WriteLine("\nWhat would you like to modify");
             Console.WriteLine("1 - Book Name ");
             Console.WriteLine("2 - Book Count");
-            Console.WriteLine("3 - Serial Number");
-            Console.WriteLine("4 - Author Name"); // HW
+            Console.WriteLine("3 - Author Name"); 
+            Console.WriteLine("4 - Serial Number");
+            
             Console.Write("\nEnter selection: ");
 
             int selection = Utils.OptionSelection(3);
@@ -155,12 +181,8 @@ namespace LibraryInventorySystem.Books
                     break;
             }
             
-            XmlDocument document = new XmlDocument();
-            document.Load(Constants.BOOKS_XML_FILE);
-
-            XmlNodeList nodes = document.GetElementsByTagName(Constants.XML_ELEMENT_NODE);
             bool isItemFound = false;
-            foreach (XmlNode node in nodes)
+            foreach (XmlNode node in LibraryController.GetXMLNodeList())
             {
 
                 if (node.Attributes[Constants.BOOK_SERIAL_NUMBER].Value == serial.ToString() || node.Attributes[Constants.BOOK_NAME].Value.ToLower().Contains(bookName))
@@ -180,14 +202,86 @@ namespace LibraryInventorySystem.Books
             }
         }
 
-        public void RequestBook(string BookName, string AuthorName, int serial = 0)
+        public static void RequestNewBook(string BookName, string AuthorName, int serial = 0)
         { 
-        
+            
         }
 
-        public static void BorrowBook(int serial)
+        public static void BorrowBook()
         {
-            XmlDocument document = new XmlDocument();
+            Console.Write("Enter the serial number: ");
+            int serial = Utils.OptionSelection(9999);
+            
+            XmlDocument document = LibraryController.LoadedDocument();
+
+            foreach (XmlNode node in LibraryController.GetXMLNodeList())
+            {
+                if (node.Attributes[Constants.BOOK_SERIAL_NUMBER].Value == serial.ToString())
+                {
+                    string bookName = node.Attributes[Constants.BOOK_NAME].Value;
+                    string authorName = node.Attributes[Constants.BOOK_AUTHOR_NAME].Value;
+                    string count = node.Attributes[Constants.BOOK_AVAILABILITY].Value;
+
+                    XmlElement root = document.CreateElement(Constants.XML_NODE_APPROVALS);
+                    
+
+                    XmlAttribute a_bookname = document.CreateAttribute(Constants.BOOK_NAME);
+                    a_bookname.Value = bookName;
+
+                    XmlAttribute a_serialNumber = document.CreateAttribute(Constants.BOOK_SERIAL_NUMBER);
+                    a_serialNumber.Value = serial.ToString();
+
+                    XmlAttribute a_authorName = document.CreateAttribute(Constants.BOOK_AUTHOR_NAME);
+                    a_authorName.Value = authorName;
+
+                    root.Attributes.Append(a_bookname);
+                    root.Attributes.Append(a_serialNumber);
+                    root.Attributes.Append(a_authorName);
+
+                    document.DocumentElement.AppendChild(root);
+                    document.Save(Constants.BOOKS_XML_FILE);
+                }
+            }
+        }
+
+        public static void ListAllBooks()
+        {
+            string[] rowToPrint = new string[] {"Book Name", "Serial", "Availability", "Author name"};
+            Utils.PrintRow(rowToPrint);
+            rowToPrint = new string[] {"-----------------------------------------------------------------------------------------------------------"};
+            Utils.PrintRow(rowToPrint);
+
+            foreach (XmlNode node in LibraryController.GetXMLNodeList())
+            {
+                rowToPrint = new string[] { 
+                    node.Attributes[Constants.BOOK_NAME].Value, 
+                    node.Attributes[Constants.BOOK_SERIAL_NUMBER].Value, 
+                    node.Attributes[Constants.BOOK_AVAILABILITY].Value,
+                    node.Attributes[Constants.BOOK_AUTHOR_NAME].Value
+                };
+                Utils.PrintRow(rowToPrint);
+            }
+        }
+
+        public static void ListAllAwaitingApprovals()
+        {
+            string[] rowToPrint = new string[] { "Book Name", "Serial", "Author name" };
+            Utils.PrintRow(rowToPrint);
+            rowToPrint = new string[] {"-----------------------------------------------------------------------------------------------------------" };
+            Utils.PrintRow(rowToPrint);
+
+            foreach (XmlNode node in LibraryController.GetXMLNodeList(Constants.XML_NODE_APPROVALS))
+            {
+                if (node.Name == Constants.XML_NODE_APPROVALS)
+                {
+                        rowToPrint = new string[] { 
+                        node.Attributes[Constants.BOOK_NAME].Value, 
+                        node.Attributes[Constants.BOOK_SERIAL_NUMBER].Value, 
+                        node.Attributes[Constants.BOOK_AUTHOR_NAME].Value
+                    };
+                    Utils.PrintRow(rowToPrint);
+                }
+            }
         }
     }
 }
