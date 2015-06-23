@@ -46,6 +46,11 @@ namespace LibraryInventorySystem.Controller
             return LoadedDocument().GetElementsByTagName(XmlTagName);
         }
 
+        public static void SaveDocument()
+        {
+            m_document.Save(Constants.BOOKS_XML_FILE);
+        }
+
         public static void Init()
         {
             LoadXML();
