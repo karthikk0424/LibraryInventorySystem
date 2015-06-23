@@ -26,12 +26,9 @@ namespace LibraryInventorySystem.Boot
             switch (selection)
                 {
                     case 1:
-                        Console.WriteLine("\n**** Authentication is required for Admin mode ****");
-
-                       // PasswordMenu paassword = new PasswordMenu();
+                        Console.WriteLine("\n**** Authentication is required for Admin mode ****");            
                         AdminView.Init();
-                        PasswordMenu.ValidateUser(eAuthenticationType.ADMIN);
-                           
+                        PasswordMenu.ValidateUser(eAuthenticationType.ADMIN);                           
                         break;
                     case 2:
                         StudentView.Display();

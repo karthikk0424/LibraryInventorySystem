@@ -23,6 +23,7 @@ namespace LibraryInventorySystem.View
             };
         }
 
+        private const string NEW_APPROVALS = "(new)";
         public static void Display()
         {
             Console.WriteLine("\nAdmin Menu");
@@ -30,7 +31,8 @@ namespace LibraryInventorySystem.View
             Console.WriteLine("2 - Query Book");
             Console.WriteLine("3 - Delete Book");
             Console.WriteLine("4 - Modify Book");
-            Console.WriteLine("5 - Advance options");
+            Console.WriteLine("5 - Awaiting approvals");
+            Console.WriteLine("6 - Advance options");
             Console.Write("\nEnter selection: ");
 
             int selection = Utils.OptionSelection(5);
@@ -48,6 +50,9 @@ namespace LibraryInventorySystem.View
                     break;
                 case 4:
                     Book.Modify();
+                    break;
+                case 5:
+                    Book.ListAllAwaitingApprovals();
                     break;
             }
         }

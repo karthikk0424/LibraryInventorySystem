@@ -16,6 +16,7 @@ namespace LibraryInventorySystem
         public const string BOOK_AVAILABILITY = "Available";
         public const string BOOK_SERIAL_NUMBER = "Serial_Number";
         public const string BOOK_AUTHOR_NAME = "Author";
+        public const string XML_NODE_APPROVALS = "Approvals";
         
         #region Exit Codes
         public const string USER = "user";
@@ -23,7 +24,6 @@ namespace LibraryInventorySystem
         public const int ERROR_BAD_ARGUMENTS = 0xA0;
         public const int ERROR_ARITHMETIC_OVERFLOW = 0x216;
         public const int ERROR_INVALID_COMMAND_LINE = 0x667;
-
         #endregion
     }
 }

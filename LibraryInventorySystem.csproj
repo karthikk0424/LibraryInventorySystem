@@ -34,7 +34,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -42,6 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Boot\GuestWelcomScreen.cs" />
+    <Compile Include="Controller\AdminController.cs" />
+    <Compile Include="Core\Encryption.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="View\AdminView.cs" />
     <Compile Include="Boot\WelcomeScreen.cs" />
