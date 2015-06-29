@@ -10,7 +10,7 @@ namespace LibraryInventorySystem.Controller
     {
         public static void AwaitingApprovals()
         {
-            Book.ListAllAwaitingApprovals();
+            Book.ListAwaitingApprovals();
         }
     }
 }
