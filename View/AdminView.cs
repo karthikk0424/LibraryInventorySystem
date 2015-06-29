@@ -52,7 +52,7 @@ namespace LibraryInventorySystem.View
                     Book.Modify();
                     break;
                 case 5:
-                    Book.ListAllAwaitingApprovals();
+                    Book.ListAwaitingApprovals();
                     break;
             }
         }
