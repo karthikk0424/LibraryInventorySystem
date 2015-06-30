@@ -185,7 +185,7 @@ namespace LibraryInventorySystem.Books
             foreach (XmlNode node in LibraryController.GetXMLNodeList())
             {
 
-                if (node.Attributes[Constants.BOOK_SERIAL_NUMBER].Value == serial.ToString() || node.Attributes[Constants.BOOK_NAME].Value.ToLower().Contains(bookName))
+                if (node.Attributes[Constants.BOOK_SERIAL_NUMBER].Value == serial.ToString() || (!string.IsNullOrEmpty(bookName) && node.Attributes[Constants.BOOK_NAME].Value.ToLower().Contains(bookName)))
                 {
                     isItemFound = true;
                     Console.WriteLine("\nBook Details");
