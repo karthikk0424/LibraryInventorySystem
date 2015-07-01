@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Boot\GuestWelcomScreen.cs" />
     <Compile Include="Controller\AdminController.cs" />
+    <Compile Include="Controller\StudentController.cs" />
     <Compile Include="Core\Encryption.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="View\AdminView.cs" />
