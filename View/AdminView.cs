@@ -16,7 +16,7 @@ namespace LibraryInventorySystem.View
         {
             PasswordMenu.authenticationResult += (result, authType) =>
             {
-                if (authType == eAuthenticationType.ADMIN)
+                if (authType == eAuthenticationType.ADMIN && result == eAuthenticationResults.Success)
                 {
                     Display();
                 }
