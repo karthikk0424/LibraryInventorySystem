@@ -17,7 +17,6 @@ namespace LibraryInventorySystem.Boot
             Console.WriteLine("\n\nLibrary Personalization Menu\n");
             Console.WriteLine("1 - Admin");
             Console.WriteLine("2 - Student");
-            Console.Write("\nEnter selection: ");
 
             int selection = Utils.OptionSelection(2);              
             
@@ -28,10 +27,11 @@ namespace LibraryInventorySystem.Boot
                     case 1:
                         Console.WriteLine("\n**** Authentication is required for Admin mode ****");            
                         AdminView.Init();
-                        PasswordMenu.ValidateUser(eAuthenticationType.ADMIN);                           
+                        PasswordMenu.ValidateUser(eAuthenticationType.ADMIN);       
                         break;
                     case 2:
-                        StudentView.Display();
+                        StudentView.Init();
+                        PasswordMenu.ValidateUser(eAuthenticationType.STUDENT); 
                         break;
                 }
 
