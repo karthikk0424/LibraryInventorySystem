@@ -47,8 +47,8 @@ namespace LibraryInventorySystem.Books
             doc.Save(Constants.BOOKS_XML_FILE);
             */
 
-            XmlDocument document = LibraryController.LoadedDocument();
-            XmlElement root = document.CreateElement(Constants.XML_ELEMENT_NODE);
+            XmlDocument document = LibraryController.LoadDocument();
+            XmlElement root = document.CreateElement(Constants.XML_ELEMENT_NODE_BOOK);
 
             
             XmlAttribute a_bookname = document.CreateAttribute(Constants.BOOK_NAME);
@@ -63,7 +63,7 @@ namespace LibraryInventorySystem.Books
             root.Attributes.Append(a_authorName);
 
             document.DocumentElement.AppendChild(root);
-            document.Save(Constants.BOOKS_XML_FILE);
+            document.Save(Constants.XML_FILE_NAME_BOOKS);
 
             //Find book and increament book count => A_Assignment
 
@@ -75,14 +75,14 @@ namespace LibraryInventorySystem.Books
             int serial = Convert.ToInt32(Console.ReadLine());
 
             //Deletion through loop
-            XmlDocument xdoc = LibraryController.LoadedDocument();
+            XmlDocument xdoc = LibraryController.LoadDocument();
             XmlNodeList nodes = LibraryController.GetXMLNodeList();
             for (int i = 0; i < nodes.Count; i++)
             {
                 if (nodes[i].Attributes[Constants.BOOK_SERIAL_NUMBER].Value == serial.ToString())
                 {
                     nodes[i].ParentNode.RemoveChild(nodes[i]);
-                    xdoc.Save(Constants.BOOKS_XML_FILE);
+                    xdoc.Save(Constants.XML_FILE_NAME_BOOKS);
                 }
             }
 
@@ -105,7 +105,7 @@ namespace LibraryInventorySystem.Books
             string authorName = string.Empty;
             int count = 0;
 
-            XmlDocument document = LibraryController.LoadedDocument();
+            XmlDocument document = LibraryController.LoadDocument();
             XmlNode selectedNode = null;
             foreach (XmlNode node in LibraryController.GetXMLNodeList())
             {
@@ -154,7 +154,7 @@ namespace LibraryInventorySystem.Books
             selectedNode.Attributes[Constants.BOOK_SERIAL_NUMBER].Value = serial.ToString();
             selectedNode.Attributes[Constants.BOOK_AVAILABILITY].Value = count.ToString();
             selectedNode.Attributes[Constants.BOOK_AUTHOR_NAME].Value = authorName;
-            document.Save(Constants.BOOKS_XML_FILE);
+            document.Save(Constants.XML_FILE_NAME_BOOKS);
         }
 
         public static void Query()
@@ -212,7 +212,7 @@ namespace LibraryInventorySystem.Books
             Console.Write("Enter the serial number: ");
             int serial = Utils.OptionSelection(9999);
             
-            XmlDocument document = LibraryController.LoadedDocument();
+            XmlDocument document = LibraryController.LoadDocument();
 
             foreach (XmlNode node in LibraryController.GetXMLNodeList())
             {
@@ -239,7 +239,7 @@ namespace LibraryInventorySystem.Books
                     root.Attributes.Append(a_authorName);
 
                     document.DocumentElement.AppendChild(root);
-                    document.Save(Constants.BOOKS_XML_FILE);
+                    document.Save(Constants.XML_FILE_NAME_BOOKS);
                 }
             }
         }
@@ -292,7 +292,7 @@ namespace LibraryInventorySystem.Books
             Console.WriteLine("\n\nEnter serial number to approve (1 to approve all): ");
             int serial = Utils.OptionSelection(9999);
 
-            XmlDocument document = LibraryController.LoadedDocument();
+            XmlDocument document = LibraryController.LoadDocument();
             foreach (XmlNode node in LibraryController.GetXMLNodeList())
             {
                 if (node.Attributes[Constants.BOOK_SERIAL_NUMBER].Value == serial.ToString())
@@ -307,7 +307,7 @@ namespace LibraryInventorySystem.Books
                         if (nodes[i].Attributes[Constants.BOOK_SERIAL_NUMBER].Value == serial.ToString())
                         {
                             nodes[i].ParentNode.RemoveChild(nodes[i]);
-                            LibraryController.SaveDocument();
+                            LibraryController.SaveBookDocument();
                         }
                     }
                 }
