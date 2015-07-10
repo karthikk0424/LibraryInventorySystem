@@ -7,6 +7,7 @@ using System.Xml.Schema;
 using System.Xml.XPath;
 using System.IO;
 using System.Xml.Linq;
+using LibraryInventorySystem.ClientServer;
 
 namespace LibraryInventorySystem.Controller
 {
@@ -25,20 +26,6 @@ namespace LibraryInventorySystem.Controller
                 m_Count = count;
                 m_SerialNumber = serialNumber;
                 m_authorName = authorName;
-            }
-        }
-
-        public struct Student
-        {
-            public string m_Name;
-            public int m_StudentNumber;
-            public string m_DeptName;
-
-            public Student(string name, int studentNumber, string deptName)
-            {
-                m_Name = name;
-                m_StudentNumber = studentNumber;
-                m_DeptName = deptName;
             }
         }
 
@@ -71,10 +58,10 @@ namespace LibraryInventorySystem.Controller
 
         public static void CreateStudentXMLData()
         {
-            Student[] students = new Student[3];
-            students[0] = new Student("Akshay", 21106, "B.Tech IT");
-            students[1] = new Student("Karthik", 21126, "B.Tech IT");
-            students[2] = new Student("Padma", 21136, "B.Tech IT");
+            StudentController.Student[] students = new StudentController.Student[3];
+            students[0] = new StudentController.Student("Akshay", 21106, "B.Tech IT");
+            students[1] = new StudentController.Student("Karthik", 21126, "B.Tech IT");
+            students[2] = new StudentController.Student("Padma", 21136, "B.Tech IT");
 
             using (XmlWriter writer = XmlWriter.Create(Constants.XML_FILE_NAME_STUDENTS))
             {
@@ -83,7 +70,7 @@ namespace LibraryInventorySystem.Controller
                 writer.WriteStartElement(Constants.XML_ROOT_ELEMENT_STUDENT);
                 writer.WriteWhitespace("\n");
 
-                foreach (Student student in students)
+                foreach (StudentController.Student student in students)
                 {
                     writer.WriteStartElement(Constants.XML_ELEMENT_NODE_STUDENT);
 
@@ -175,7 +162,7 @@ namespace LibraryInventorySystem.Controller
         private static XmlDocument m_document = null;
         public static XmlDocument LoadDocument(string documentName = Constants.XML_FILE_NAME_BOOKS)
         {
-            if (m_document == null)
+            if (m_document == null || !documentName.Contains(m_document.DocumentElement.Name))
             {
                 m_document = new XmlDocument();
                 m_document.Load(documentName);
@@ -186,12 +173,19 @@ namespace LibraryInventorySystem.Controller
 
         public static XmlNodeList GetXMLNodeList(string XmlTagName = Constants.XML_ELEMENT_NODE_BOOK)
         {
-            return LoadDocument().GetElementsByTagName(XmlTagName);
+            return m_document.GetElementsByTagName(XmlTagName);
         }
 
         public static void SaveBookDocument()
         {
             m_document.Save(Constants.XML_FILE_NAME_BOOKS);
+            Client.SaveAndUploadAll();
+        }
+
+        public static void SaveStudentDocument()
+        {
+            m_document.Save(Constants.XML_FILE_NAME_STUDENTS);
+            Client.SaveAndUploadAll();
         }
         #endregion
     }

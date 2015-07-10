@@ -50,6 +50,7 @@ namespace LibraryInventorySystem.Books
             XmlDocument document = LibraryController.LoadDocument();
             XmlElement root = document.CreateElement(Constants.XML_ELEMENT_NODE_BOOK);
 
+            Console.Write(document.Name);
             
             XmlAttribute a_bookname = document.CreateAttribute(Constants.BOOK_NAME);
             a_bookname.Value = bookName;
@@ -63,7 +64,7 @@ namespace LibraryInventorySystem.Books
             root.Attributes.Append(a_authorName);
 
             document.DocumentElement.AppendChild(root);
-            document.Save(Constants.XML_FILE_NAME_BOOKS);
+            LibraryController.SaveBookDocument();
 
             //Find book and increament book count => A_Assignment
 
@@ -154,7 +155,7 @@ namespace LibraryInventorySystem.Books
             selectedNode.Attributes[Constants.BOOK_SERIAL_NUMBER].Value = serial.ToString();
             selectedNode.Attributes[Constants.BOOK_AVAILABILITY].Value = count.ToString();
             selectedNode.Attributes[Constants.BOOK_AUTHOR_NAME].Value = authorName;
-            document.Save(Constants.XML_FILE_NAME_BOOKS);
+            LibraryController.SaveBookDocument();
         }
 
         public static void Query()
@@ -224,7 +225,6 @@ namespace LibraryInventorySystem.Books
 
                     XmlElement root = document.CreateElement(Constants.XML_NODE_APPROVALS);
                     
-
                     XmlAttribute a_bookname = document.CreateAttribute(Constants.BOOK_NAME);
                     a_bookname.Value = bookName;
 
@@ -242,6 +242,7 @@ namespace LibraryInventorySystem.Books
                     document.Save(Constants.XML_FILE_NAME_BOOKS);
                 }
             }
+            LibraryController.SaveBookDocument();
         }
 
         public static void ListAllBooks()
@@ -251,6 +252,7 @@ namespace LibraryInventorySystem.Books
             rowToPrint = new string[] {"-----------------------------------------------------------------------------------------------------------"};
             Utils.PrintRow(rowToPrint);
 
+            LibraryController.LoadDocument();
             foreach (XmlNode node in LibraryController.GetXMLNodeList())
             {
                 rowToPrint = new string[] { 
@@ -275,7 +277,7 @@ namespace LibraryInventorySystem.Books
             Utils.PrintRow(rowToPrint);
             rowToPrint = new string[] {"-----------------------------------------------------------------------------------------------------------" };
             Utils.PrintRow(rowToPrint);
-
+            
             foreach (XmlNode node in nodeList)
             {
                 if (node.Name == Constants.XML_NODE_APPROVALS)

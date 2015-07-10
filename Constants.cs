@@ -7,6 +7,8 @@ namespace LibraryInventorySystem
 {
     static class Constants
     {
+        public const string XML_SERVER_PATH = "http://127.0.0.1/LibraryInventory/";
+
         public const string XML_FILE_NAME_BOOKS = "books.xml";
         public const string XML_FILE_NAME_STUDENTS = "students.xml";
         public const string BOOKS_APPROVAL_XML_FILE = "bookapproval.xml";
