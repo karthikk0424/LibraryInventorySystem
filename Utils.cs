@@ -8,8 +8,9 @@ namespace LibraryInventorySystem
 {
     class Utils
     {
-        public static int OptionSelection(int numberOfOption)
+        public static int OptionSelection(int numberOfOption, string message = "\nEnter an option to continue: " )
         {
+            Console.Write(message);
             bool valid = false;
             int selection = 0;
             do
@@ -19,7 +20,7 @@ namespace LibraryInventorySystem
                 if (!valid)
                 {
                     Console.WriteLine("Invalid Selection");
-                    Console.Write("Enter an option to continue: ");
+                    Console.Write(message);
                 }
             } while (!valid);
 
@@ -37,11 +38,11 @@ namespace LibraryInventorySystem
         public static void PrintRow(params string[] columns)
         {
             int width = (tableWidth - columns.Length) / columns.Length;
-            string row = "";
+            string row = " ";
 
             foreach (string column in columns)
             {
-                row += AlignCentre(column, width) + "";
+                row += AlignCentre(column, width);
             }
             Console.WriteLine("\n");
             Console.WriteLine(row);

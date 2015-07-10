@@ -36,6 +36,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -44,8 +45,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Boot\GuestWelcomScreen.cs" />
+    <Compile Include="ClientServer\Client.cs" />
     <Compile Include="Controller\AdminController.cs" />
+    <Compile Include="Controller\StudentController.cs" />
     <Compile Include="Core\Encryption.cs" />
+    <Compile Include="ClientServer\Server.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="View\AdminView.cs" />
     <Compile Include="Boot\WelcomeScreen.cs" />
@@ -56,6 +60,7 @@
     <Compile Include="Menus\PasswordMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Books\Book.cs" />
+    <Compile Include="View\View.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

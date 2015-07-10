@@ -10,20 +10,20 @@ using System.Xml.XPath;
 
 namespace LibraryInventorySystem.View
 {
-    sealed class AdminView
+    class AdminView : View
     {
         public static void Init()
         {
             PasswordMenu.authenticationResult += (result, authType) =>
             {
-                if (authType == eAuthenticationType.ADMIN)
+                if (authType == eAuthenticationType.ADMIN && result == eAuthenticationResults.Success)
                 {
                     Display();
                 }
             };
         }
 
-        private const string NEW_APPROVALS = "(new)";
+        private const string NEW_APPROVALS = "(new)"; // Make this appear if new approvals are required
         public static void Display()
         {
             Console.WriteLine("\nAdmin Menu");
@@ -33,7 +33,6 @@ namespace LibraryInventorySystem.View
             Console.WriteLine("4 - Modify Book");
             Console.WriteLine("5 - Awaiting approvals");
             Console.WriteLine("6 - Advance options");
-            Console.Write("\nEnter selection: ");
 
             int selection = Utils.OptionSelection(5);
 
@@ -52,7 +51,7 @@ namespace LibraryInventorySystem.View
                     Book.Modify();
                     break;
                 case 5:
-                    Book.ListAllAwaitingApprovals();
+                    Book.ListAwaitingApprovals();
                     break;
             }
         }

@@ -7,7 +7,8 @@ namespace LibraryInventorySystem.Menus
 {
     enum eAuthenticationType
     {
-        ADMIN
+        ADMIN,
+        STUDENT
     }
 
     enum eAuthenticationResults
@@ -23,16 +24,19 @@ namespace LibraryInventorySystem.Menus
 
         public static bool ValidateUser(eAuthenticationType type)
         {
-            Console.Write("\nUsername: ");
-            string username = Console.ReadLine();
-            Console.Write("\nPassword: ");
-            string password = Console.ReadLine();
             bool isValidCredential = false;
 
             switch (type)
             { 
-                case eAuthenticationType.ADMIN:
+                case eAuthenticationType.ADMIN:                    
+                    Console.Write("\nUsername: ");
+                    string username = Console.ReadLine();
+                    Console.Write("\nPassword: ");
+                    string password = Console.ReadLine();
                     isValidCredential = username == "user" && password == "1234";
+                    break;
+                case eAuthenticationType.STUDENT:
+                    isValidCredential = LibraryInventorySystem.Controller.StudentController.ValidateStudent();
                     break;
             }
 
@@ -43,6 +47,7 @@ namespace LibraryInventorySystem.Menus
             }
             else
             {
+                Console.WriteLine("Authentication failed, Incorrect username or password");
                 authenticationResult(eAuthenticationResults.Failed, type);
             }
             return false;

@@ -7,6 +7,7 @@ using System.Xml.Schema;
 using System.Xml.XPath;
 using System.IO;
 using System.Xml.Linq;
+using LibraryInventorySystem.ClientServer;
 
 namespace LibraryInventorySystem.Controller
 {
@@ -28,24 +29,6 @@ namespace LibraryInventorySystem.Controller
             }
         }
 
-        private static XmlDocument m_document = null;
-
-        public static XmlDocument LoadedDocument()
-        {
-            if(m_document == null)
-            { 
-                m_document = new XmlDocument();                
-                m_document.Load(Constants.BOOKS_XML_FILE);
-                
-            }
-            return m_document;
-        }
-
-        public static XmlNodeList GetXMLNodeList(string XmlTagName = Constants.XML_ELEMENT_NODE)
-        {
-            return LoadedDocument().GetElementsByTagName(XmlTagName);
-        }
-
         public static void Init()
         {
             LoadXML();
@@ -53,20 +36,55 @@ namespace LibraryInventorySystem.Controller
 
         private static void LoadXML()
         {
-            if (!File.Exists(Constants.BOOKS_XML_FILE))
+            if (!File.Exists(Constants.XML_FILE_NAME_BOOKS))
             {
-                FileStream file = File.Create(Constants.BOOKS_XML_FILE);
-                file.Close();
                 CreateDefaultXMLData();
+            }
+
+            if (!File.Exists(Constants.XML_FILE_NAME_STUDENTS))
+            {
+                CreateStudentXMLData();
             }
         }
 
         public static void FlushXMLData()
         {
-            XmlDocument document = LoadedDocument();
+            XmlDocument document = LoadDocument();
             foreach (XmlNode node in GetXMLNodeList())
             {
                 node.RemoveAll();
+            }
+        }
+
+        public static void CreateStudentXMLData()
+        {
+            StudentController.Student[] students = new StudentController.Student[3];
+            students[0] = new StudentController.Student("Akshay", 21106, "B.Tech IT");
+            students[1] = new StudentController.Student("Karthik", 21126, "B.Tech IT");
+            students[2] = new StudentController.Student("Padma", 21136, "B.Tech IT");
+
+            using (XmlWriter writer = XmlWriter.Create(Constants.XML_FILE_NAME_STUDENTS))
+            {
+                writer.WriteStartDocument();
+                writer.WriteWhitespace("\n");
+                writer.WriteStartElement(Constants.XML_ROOT_ELEMENT_STUDENT);
+                writer.WriteWhitespace("\n");
+
+                foreach (StudentController.Student student in students)
+                {
+                    writer.WriteStartElement(Constants.XML_ELEMENT_NODE_STUDENT);
+
+                    writer.WriteAttributeString(Constants.STUDENT_NAME, student.m_Name);
+                    writer.WriteAttributeString(Constants.STUDENT_NUMBER, student.m_StudentNumber.ToString());
+                    writer.WriteAttributeString(Constants.STUDENT_DEPARTMENT, student.m_DeptName);
+
+                    writer.WriteEndElement();
+                    writer.WriteWhitespace("\n");
+                }
+
+                writer.WriteEndElement();
+                writer.WriteEndDocument();
+                writer.Close();
             }
         }
 
@@ -84,16 +102,16 @@ namespace LibraryInventorySystem.Controller
             books[8] = new Book("System Software", 2, 1109, "M John");
             books[9] = new Book("Database Management System", 2, 1100, "M John");
             
-            using (XmlWriter writer = XmlWriter.Create(Constants.BOOKS_XML_FILE))
+            using (XmlWriter writer = XmlWriter.Create(Constants.XML_FILE_NAME_BOOKS))
             {
                 writer.WriteStartDocument();
                 writer.WriteWhitespace("\n");
-                writer.WriteStartElement("Books");
+                writer.WriteStartElement(Constants.XML_ROOT_ELEMENT_BOOK);
                 writer.WriteWhitespace("\n");
 
                 foreach (Book book in books)
                 {
-                    writer.WriteStartElement("Book");
+                    writer.WriteStartElement(Constants.XML_ELEMENT_NODE_BOOK);
 
                     writer.WriteAttributeString("Name", book.m_Name);
                     writer.WriteAttributeString("Available", book.m_Count.ToString());
@@ -138,5 +156,37 @@ namespace LibraryInventorySystem.Controller
                     break;
             }
         }
+
+        #region XmlDocument helper methods
+
+        private static XmlDocument m_document = null;
+        public static XmlDocument LoadDocument(string documentName = Constants.XML_FILE_NAME_BOOKS)
+        {
+            if (m_document == null || !documentName.Contains(m_document.DocumentElement.Name))
+            {
+                m_document = new XmlDocument();
+                m_document.Load(documentName);
+
+            }
+            return m_document;
+        }
+
+        public static XmlNodeList GetXMLNodeList(string XmlTagName = Constants.XML_ELEMENT_NODE_BOOK)
+        {
+            return m_document.GetElementsByTagName(XmlTagName);
+        }
+
+        public static void SaveBookDocument()
+        {
+            m_document.Save(Constants.XML_FILE_NAME_BOOKS);
+            Client.SaveAndUploadAll();
+        }
+
+        public static void SaveStudentDocument()
+        {
+            m_document.Save(Constants.XML_FILE_NAME_STUDENTS);
+            Client.SaveAndUploadAll();
+        }
+        #endregion
     }
 }

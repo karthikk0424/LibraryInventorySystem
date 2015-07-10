@@ -4,12 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using LibraryInventorySystem.Books;
+using LibraryInventorySystem.Menus;
 
 namespace LibraryInventorySystem.View
 {
-    class StudentView
+    class StudentView : View
     {
-        public static void Display()
+        public static void Init()
+        {
+            PasswordMenu.authenticationResult += (result, authType) =>
+            {
+                if (authType == eAuthenticationType.STUDENT && result == eAuthenticationResults.Success)
+                {
+                    Display();
+                }
+            };
+        }
+
+        private static void Display()
         {
             Console.WriteLine("Student Menu");
             Console.WriteLine("-------------");
@@ -17,14 +29,14 @@ namespace LibraryInventorySystem.View
             Console.WriteLine("2 - List All Books");
             Console.WriteLine("3 - Borrow book");
             Console.WriteLine("4 - Request new book - beta");
-            Console.Write("\nEnter an option :");
+            Console.WriteLine("5 - Close");
 
-            int selection = Utils.OptionSelection(4);
+            int selection = Utils.OptionSelection(5);
 
             switch (selection)
             { 
                 case 1:
-                    // HW
+                    Book.Query();
                     break;
                 case 2:
                     Book.ListAllBooks();
@@ -35,7 +47,9 @@ namespace LibraryInventorySystem.View
                 case 4:
                     Utils.PrintRow();
                     break;
-
+                case 5:
+                    CloseView();
+                    break;
             }
         }
 
@@ -45,9 +59,9 @@ namespace LibraryInventorySystem.View
 
             int serial = Utils.OptionSelection(9999);
             XmlDocument document = new XmlDocument();
-            document.Load(Constants.BOOKS_XML_FILE);
+            document.Load(Constants.XML_FILE_NAME_BOOKS);
 
-            XmlNodeList nodes = document.GetElementsByTagName(Constants.XML_ELEMENT_NODE);
+            XmlNodeList nodes = document.GetElementsByTagName(Constants.XML_ELEMENT_NODE_BOOK);
             bool isItemFound = false;
             int numberOfBook = 1;
             
@@ -70,7 +84,7 @@ namespace LibraryInventorySystem.View
                         break;
                     }
                     node.Attributes[Constants.BOOK_AVAILABILITY].Value = numberOfBook.ToString();
-                    document.Save(Constants.BOOKS_XML_FILE);
+                    document.Save(Constants.XML_FILE_NAME_BOOKS);
 
                     Console.WriteLine("Author Name\t: " + node.Attributes[Constants.BOOK_AUTHOR_NAME].Value);
                 }
