@@ -38,11 +38,11 @@ namespace LibraryInventorySystem
         public static void PrintRow(params string[] columns)
         {
             int width = (tableWidth - columns.Length) / columns.Length;
-            string row = "";
+            string row = " ";
 
             foreach (string column in columns)
             {
-                row += AlignCentre(column, width) + "";
+                row += AlignCentre(column, width);
             }
             Console.WriteLine("\n");
             Console.WriteLine(row);
