@@ -8,14 +8,27 @@ namespace LibraryInventorySystem.Controller
 {
     class StudentController
     {
+        public struct Student
+        {
+            public string m_Name;
+            public int m_StudentNumber;
+            public string m_DeptName;
+
+            public Student(string name, int studentNumber, string deptName)
+            {
+                m_Name = name;
+                m_StudentNumber = studentNumber;
+                m_DeptName = deptName;
+            }
+        }
 
         public int CurrentStudentNumber
         {
             set { }
         }
 
-        LibraryController.Student m_CurrentStudent;
-        public LibraryController.Student CurrentStudent
+        static Student m_CurrentStudent;
+        public Student CurrentStudent
         { 
             get {return m_CurrentStudent;}
         }
@@ -29,12 +42,17 @@ namespace LibraryInventorySystem.Controller
         {
             int number = Utils.OptionSelection(99999, "Enter the Student number to continue: ");
             XmlDocument document = LibraryController.LoadDocument(Constants.XML_FILE_NAME_STUDENTS);
-            foreach (XmlNode node in LibraryController.GetXMLNodeList(Constants.XML_ELEMENT_NODE_STUDENT))
+            foreach (XmlNode node in document.GetElementsByTagName(Constants.XML_ELEMENT_NODE_STUDENT))
             {
                 if (node.Attributes[Constants.STUDENT_NUMBER].Value == number.ToString())
                 {
+                    m_CurrentStudent = new Student(node.Attributes[Constants.STUDENT_NUMBER].Value,
+                                       number,
+                                       node.Attributes[Constants.STUDENT_NUMBER].Value);
+
                     Console.WriteLine("Student is valid");
                     Console.WriteLine("Create stud struct");
+                    
                     return true;
                 }
             }

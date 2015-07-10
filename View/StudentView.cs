@@ -8,7 +8,7 @@ using LibraryInventorySystem.Menus;
 
 namespace LibraryInventorySystem.View
 {
-    class StudentView
+    class StudentView : View
     {
         public static void Init()
         {
@@ -29,9 +29,9 @@ namespace LibraryInventorySystem.View
             Console.WriteLine("2 - List All Books");
             Console.WriteLine("3 - Borrow book");
             Console.WriteLine("4 - Request new book - beta");
-            Console.Write("\nEnter an option :");
+            Console.WriteLine("5 - Close");
 
-            int selection = Utils.OptionSelection(4);
+            int selection = Utils.OptionSelection(5);
 
             switch (selection)
             { 
@@ -47,7 +47,9 @@ namespace LibraryInventorySystem.View
                 case 4:
                     Utils.PrintRow();
                     break;
-
+                case 5:
+                    CloseView();
+                    break;
             }
         }
 

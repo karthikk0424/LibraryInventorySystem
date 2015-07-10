@@ -10,7 +10,7 @@ using System.Xml.XPath;
 
 namespace LibraryInventorySystem.View
 {
-    sealed class AdminView
+    class AdminView : View
     {
         public static void Init()
         {
@@ -33,7 +33,6 @@ namespace LibraryInventorySystem.View
             Console.WriteLine("4 - Modify Book");
             Console.WriteLine("5 - Awaiting approvals");
             Console.WriteLine("6 - Advance options");
-            Console.Write("\nEnter selection: ");
 
             int selection = Utils.OptionSelection(5);
 
