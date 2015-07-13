@@ -15,8 +15,8 @@ namespace LibraryInventorySystem.Boot
             LibraryController.Init();
 
             Console.WriteLine("\n\nLibrary Personalization Menu\n");
-            Console.WriteLine("1 - Admin");
-            Console.WriteLine("2 - Student");
+            Console.WriteLine(" 1 - Admin");
+            Console.WriteLine(" 2 - Student");
 
             int selection = Utils.OptionSelection(2);              
             
