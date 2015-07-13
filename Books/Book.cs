@@ -48,10 +48,19 @@ namespace LibraryInventorySystem.Books
             */
 
             XmlDocument document = LibraryController.LoadDocument();
-            XmlElement root = document.CreateElement(Constants.XML_ELEMENT_NODE_BOOK);
-
-            Console.Write(document.Name);
+            foreach (XmlNode node in LibraryController.GetXMLNodeList())
+            {
+                if (node.Attributes[Constants.BOOK_SERIAL_NUMBER].Value == serialNumber.ToString())
+                {
+                    int count = Int32.Parse(node.Attributes[Constants.BOOK_AVAILABILITY].Value);
+                    count++;
+                    node.Attributes[Constants.BOOK_AVAILABILITY].Value = count.ToString();
+                    LibraryController.SaveBookDocument();
+                    return;
+                }
+            }
             
+            XmlElement root = document.CreateElement(Constants.XML_ELEMENT_NODE_BOOK);
             XmlAttribute a_bookname = document.CreateAttribute(Constants.BOOK_NAME);
             a_bookname.Value = bookName;
             XmlAttribute a_serialNumber = document.CreateAttribute(Constants.BOOK_SERIAL_NUMBER);
@@ -99,9 +108,7 @@ namespace LibraryInventorySystem.Books
 
         public static void Modify()
         {
-            Console.Write("Enter the serial number: ");
-
-            int serial = Utils.OptionSelection(9999);
+            int serial = Utils.OptionSelection(9999, "Enter the serial number: ");
             string bookName = string.Empty;
             string authorName = string.Empty;
             int count = 0;
@@ -126,8 +133,6 @@ namespace LibraryInventorySystem.Books
             Console.WriteLine("2 - Book Count");
             Console.WriteLine("3 - Author Name"); 
             Console.WriteLine("4 - Serial Number");
-            
-            Console.Write("\nEnter selection: ");
 
             int selection = Utils.OptionSelection(3);
 
@@ -183,6 +188,7 @@ namespace LibraryInventorySystem.Books
             }
             
             bool isItemFound = false;
+            LibraryController.LoadDocument();
             foreach (XmlNode node in LibraryController.GetXMLNodeList())
             {
 
@@ -210,8 +216,7 @@ namespace LibraryInventorySystem.Books
 
         public static void BorrowBook()
         {
-            Console.Write("Enter the serial number: ");
-            int serial = Utils.OptionSelection(9999);
+            int serial = Utils.OptionSelection(9999, "Enter the serial number: ");
             
             XmlDocument document = LibraryController.LoadDocument();
 
@@ -267,6 +272,7 @@ namespace LibraryInventorySystem.Books
 
         public static void ListAwaitingApprovals()
         {
+            XmlDocument document = LibraryController.LoadDocument();
             XmlNodeList nodeList = LibraryController.GetXMLNodeList(Constants.XML_NODE_APPROVALS);
             if (nodeList.Count == 0)
             {
@@ -294,7 +300,6 @@ namespace LibraryInventorySystem.Books
             Console.WriteLine("\n\nEnter serial number to approve (1 to approve all): ");
             int serial = Utils.OptionSelection(9999);
 
-            XmlDocument document = LibraryController.LoadDocument();
             foreach (XmlNode node in LibraryController.GetXMLNodeList())
             {
                 if (node.Attributes[Constants.BOOK_SERIAL_NUMBER].Value == serial.ToString())
