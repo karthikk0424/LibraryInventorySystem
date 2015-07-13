@@ -7,14 +7,14 @@ namespace LibraryInventorySystem.View
 {
     class View
     {
-        protected static void OpenView()
+        protected static void OnOpenView()
         {
-            
+            System.Diagnostics.Debug.Write("A View is opened");
         }
 
-        protected static void CloseView()
+        protected static void OnCloseView()
         {
-            ClientServer.Client.SaveAndUploadAll();
+            System.Diagnostics.Debug.Write("A View is Closed");
         }
     }
 }
