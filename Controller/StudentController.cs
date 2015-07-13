@@ -49,10 +49,7 @@ namespace LibraryInventorySystem.Controller
                     m_CurrentStudent = new Student(node.Attributes[Constants.STUDENT_NUMBER].Value,
                                        number,
                                        node.Attributes[Constants.STUDENT_NUMBER].Value);
-
-                    Console.WriteLine("Student is valid");
-                    Console.WriteLine("Create stud struct");
-                    
+                                        
                     return true;
                 }
             }
