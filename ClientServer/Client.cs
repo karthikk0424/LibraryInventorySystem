@@ -7,10 +7,9 @@ namespace LibraryInventorySystem.ClientServer
 {
     class Client
     {
-        public static void SaveAndUploadAll()
+        public static void SaveAndUpload(string filename)
         {
-           Server.UploadToCloud(Constants.XML_FILE_NAME_BOOKS);
-           Server.UploadToCloud(Constants.XML_FILE_NAME_STUDENTS);
+            Server.UploadToCloud(filename);
         }
     }
 }
