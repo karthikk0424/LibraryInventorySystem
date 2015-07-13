@@ -8,9 +8,16 @@ namespace LibraryInventorySystem.Controller
 {
     class AdminController
     {
-        public static void AwaitingApprovals()
+        public static bool ValidateAdmin()
         {
-            Book.ListAwaitingApprovals();
+            Console.Write("\nUsername: ");
+            string username = Console.ReadLine();
+            Console.Write("\nPassword: ");
+            string password = Console.ReadLine();
+
+            bool isValid = username == "" && password == "";
+            return isValid;
         }
+
     }
 }
