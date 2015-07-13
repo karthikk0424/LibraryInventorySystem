@@ -178,14 +178,14 @@ namespace LibraryInventorySystem.Controller
 
         public static void SaveBookDocument()
         {
-            m_document.Save(Constants.XML_FILE_NAME_BOOKS);
-            Client.SaveAndUploadAll();
+            m_document.Save(Constants.XML_FILE_NAME_BOOKS);      //Save local file
+            Client.SaveAndUpload(Constants.XML_FILE_NAME_BOOKS); //upload local file to server 
         }
 
         public static void SaveStudentDocument()
         {
             m_document.Save(Constants.XML_FILE_NAME_STUDENTS);
-            Client.SaveAndUploadAll();
+            Client.SaveAndUpload(Constants.XML_FILE_NAME_STUDENTS);
         }
         #endregion
     }
