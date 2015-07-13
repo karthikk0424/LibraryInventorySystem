@@ -17,19 +17,21 @@ namespace LibraryInventorySystem.View
                 if (authType == eAuthenticationType.STUDENT && result == eAuthenticationResults.Success)
                 {
                     Display();
+                    OnOpenView();
                 }
             };
         }
 
         private static void Display()
         {
-            Console.WriteLine("Student Menu");
+            Console.Clear();
+            Console.WriteLine("\nStudent Menu");
             Console.WriteLine("-------------");
-            Console.WriteLine("1 - Query book");
-            Console.WriteLine("2 - List All Books");
-            Console.WriteLine("3 - Borrow book");
-            Console.WriteLine("4 - Request new book - beta");
-            Console.WriteLine("5 - Close");
+            Console.WriteLine(" 1 - Query book");
+            Console.WriteLine(" 2 - List All Books");
+            Console.WriteLine(" 3 - Borrow book");
+            Console.WriteLine(" 4 - Request new book - beta");
+            Console.WriteLine(" 5 - Close");
 
             int selection = Utils.OptionSelection(5);
 
@@ -48,7 +50,7 @@ namespace LibraryInventorySystem.View
                     Utils.PrintRow();
                     break;
                 case 5:
-                    CloseView();
+                    OnCloseView();
                     break;
             }
         }
