@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using LibraryInventorySystem.Controller;
 
 namespace LibraryInventorySystem.Menus
 {
@@ -29,14 +30,10 @@ namespace LibraryInventorySystem.Menus
             switch (type)
             { 
                 case eAuthenticationType.ADMIN:                    
-                    Console.Write("\nUsername: ");
-                    string username = Console.ReadLine();
-                    Console.Write("\nPassword: ");
-                    string password = Console.ReadLine();
-                    isValidCredential = username == "user" && password == "1234";
+                    isValidCredential = AdminController.ValidateAdmin(); 
                     break;
                 case eAuthenticationType.STUDENT:
-                    isValidCredential = LibraryInventorySystem.Controller.StudentController.ValidateStudent();
+                    isValidCredential = StudentController.ValidateStudent();
                     break;
             }
 
