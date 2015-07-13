@@ -26,15 +26,17 @@ namespace LibraryInventorySystem.View
         private const string NEW_APPROVALS = "(new)"; // Make this appear if new approvals are required
         public static void Display()
         {
+            Console.Clear();
             Console.WriteLine("\nAdmin Menu");
-            Console.WriteLine("1 - Add Book ");
-            Console.WriteLine("2 - Query Book");
-            Console.WriteLine("3 - Delete Book");
-            Console.WriteLine("4 - Modify Book");
-            Console.WriteLine("5 - Awaiting approvals");
-            Console.WriteLine("6 - Advance options");
+            Console.WriteLine("--------------");
+            Console.WriteLine(" 1 - Add Book ");
+            Console.WriteLine(" 2 - List all books");
+            Console.WriteLine(" 3 - Query Book");
+            Console.WriteLine(" 4 - Delete Book");
+            Console.WriteLine(" 5 - Modify Book");
+            Console.WriteLine(" 6 - Awaiting approvals");
 
-            int selection = Utils.OptionSelection(5);
+            int selection = Utils.OptionSelection(6);
 
             switch(selection)
             {
@@ -42,15 +44,18 @@ namespace LibraryInventorySystem.View
                     Book.Add();
                     break;
                 case 2:
-                    Book.Query();
+                    Book.ListAllBooks();
                     break;
                 case 3:
-                    Book.Delete();
+                    Book.Query();
                     break;
                 case 4:
-                    Book.Modify();
+                    Book.Delete();
                     break;
                 case 5:
+                    Book.Modify();
+                    break;
+                case 6:
                     Book.ListAwaitingApprovals();
                     break;
             }
