@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using System.IO;
 
 namespace LibraryInventorySystem.Controller
 {
@@ -22,26 +23,20 @@ namespace LibraryInventorySystem.Controller
             }
         }
 
-        public int CurrentStudentNumber
-        {
-            set { }
-        }
-
         static Student m_CurrentStudent;
         public Student CurrentStudent
         { 
             get {return m_CurrentStudent;}
         }
 
-        public static void GetCurrentStudent()
-        { 
-        
-        }
-
         public static bool ValidateStudent()
         {
             int number = Utils.OptionSelection(99999, "Enter the Student number to continue: ");
-            XmlDocument document = LibraryController.LoadDocument(Constants.XML_FILE_NAME_STUDENTS);
+
+            Security.Encryption.Decrypt(Constants.XML_FILE_NAME_STUDENTS);
+
+            XmlDocument document = LibraryController.LoadDocument(Constants.XML_FILE_NAME_STUDENTS);            
+
             foreach (XmlNode node in document.GetElementsByTagName(Constants.XML_ELEMENT_NODE_STUDENT))
             {
                 if (node.Attributes[Constants.STUDENT_NUMBER].Value == number.ToString())
