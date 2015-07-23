@@ -30,6 +30,7 @@ namespace LibraryInventorySystem
         public const string STUDENT_DEPARTMENT = "Department";
 
         public const string XML_NODE_APPROVALS = "Approvals";
+        public const string XML_NODE_NEW_REQUEST = "Request";
         
         #region Exit Codes
         public const int ERROR_SUCCESS = 0;
