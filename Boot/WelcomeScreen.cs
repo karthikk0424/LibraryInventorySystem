@@ -10,7 +10,7 @@ namespace LibraryInventorySystem.Boot
 {
     class WelcomeScreen
     {
-        public virtual void InitWelcomeScreen()
+        public static void Display()
         {
             LibraryController.Init();
 
