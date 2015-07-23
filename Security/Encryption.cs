@@ -9,23 +9,26 @@ using System.Linq;
 using System.Text;
 using System.Security.Cryptography;
 using System.IO;
+using System.Xml;
 
-namespace LibraryInventorySystem.Core
+namespace LibraryInventorySystem.Security
 {
     public static class Encryption
     {
         public static bool IsEncryptionEnabled = true;
+        public static string PASSPHRASE = "Vector3Games";
+
         private const string InitVector = "T=A4rAzu94ez-dra";
         private const int KeySize = 256;
         private const int PasswordIterations = 1000; //2;
         private const string SaltValue = "d=?ustAF=UstenAr3B@pRu8=ner5sW&h59_Xe9P2za-eFr2fa&ePHE@ras!a+uc@";
 
-        public static string Decrypt(string encryptedText, string passPhrase)
+        public static string Decrypt(string filename)
         {
-            
+            string encryptedText = File.ReadAllText(filename);
             byte[] encryptedTextBytes = Convert.FromBase64String(encryptedText);
             byte[] initVectorBytes = Encoding.UTF8.GetBytes(InitVector);
-            byte[] passwordBytes = Encoding.UTF8.GetBytes(passPhrase);
+            byte[] passwordBytes = Encoding.UTF8.GetBytes(PASSPHRASE);
             string plainText = string.Empty;
             byte[] saltValueBytes = Encoding.UTF8.GetBytes(SaltValue);
 
@@ -49,6 +52,10 @@ namespace LibraryInventorySystem.Core
 
                                 int decryptedByteCount = cryptoStream.Read(plainTextBytes, 0, plainTextBytes.Length);
                                 plainText = Encoding.UTF8.GetString(plainTextBytes, 0, decryptedByteCount);
+
+                                File.WriteAllText(filename, string.Empty);
+                                File.WriteAllText(filename, plainText);
+
                             }
                         }
                     }
@@ -61,11 +68,12 @@ namespace LibraryInventorySystem.Core
             return plainText;
         }
 
-        public static string Encrypt(string plainText, string passPhrase)
+        public static string Encrypt(string plainText)
         {
+            //string plainText = XmlToString(document);
             string encryptedText = string.Empty;
             byte[] initVectorBytes = Encoding.UTF8.GetBytes(InitVector);
-            byte[] passwordBytes = Encoding.UTF8.GetBytes(passPhrase);
+            byte[] passwordBytes = Encoding.UTF8.GetBytes(PASSPHRASE);
             byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
             byte[] saltValueBytes = Encoding.UTF8.GetBytes(SaltValue);
 
@@ -93,5 +101,11 @@ namespace LibraryInventorySystem.Core
             }
             return encryptedText;
         }
+
+        public static string XmlToString(XmlDocument document)
+        {
+            return document.OuterXml;
+        }
     }
+
 }

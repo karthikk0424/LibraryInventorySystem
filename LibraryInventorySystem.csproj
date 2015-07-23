@@ -48,7 +48,7 @@
     <Compile Include="ClientServer\Client.cs" />
     <Compile Include="Controller\AdminController.cs" />
     <Compile Include="Controller\StudentController.cs" />
-    <Compile Include="Core\Encryption.cs" />
+    <Compile Include="Security\Encryption.cs" />
     <Compile Include="ClientServer\Server.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="View\AdminView.cs" />
