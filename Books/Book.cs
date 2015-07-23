@@ -211,7 +211,7 @@ namespace LibraryInventorySystem.Books
             }
         }
 
-        public static void RequestNewBook(string BookName, string AuthorName, int serial = 0)
+        public static void RequestNewBook()
         { 
             /*
              * Create new node
@@ -222,10 +222,7 @@ namespace LibraryInventorySystem.Books
              */
             Console.Write("Enter Book name: ");
             string bookName = Console.ReadLine();
-
-            Console.Write("Enter the serial number: ");
-            string serialNumber = Console.ReadLine();
-
+            
             Console.Write("Enter the Author name: ");
             string authorName = Console.ReadLine();
 
@@ -240,20 +237,16 @@ namespace LibraryInventorySystem.Books
 
             XmlAttribute a_bookCount = document.CreateAttribute(Constants.BOOK_AVAILABILITY);
             a_bookCount.Value = bookCount.ToString();
-
-            XmlAttribute a_serialNumber = document.CreateAttribute(Constants.BOOK_SERIAL_NUMBER);
-            a_serialNumber.Value = serial.ToString();
-
+            
             XmlAttribute a_authorName = document.CreateAttribute(Constants.BOOK_AUTHOR_NAME);
             a_authorName.Value = authorName;
 
             root.Attributes.Append(a_bookname);
-            root.Attributes.Append(a_serialNumber);
             root.Attributes.Append(a_bookCount);
             root.Attributes.Append(a_authorName);
 
             document.DocumentElement.AppendChild(root);
-            document.Save(Constants.XML_FILE_NAME_BOOKS);
+            LibraryController.SaveBookDocument();
         }
 
         public static void Borrow()
@@ -261,8 +254,7 @@ namespace LibraryInventorySystem.Books
             Console.WriteLine("Enter the serial number to borrow book");
 
             int serial = Utils.OptionSelection(9999);
-            XmlDocument document = new XmlDocument();
-            document.Load(Constants.XML_FILE_NAME_BOOKS);
+            XmlDocument document = LibraryController.LoadDocument();
 
             XmlNodeList nodes = document.GetElementsByTagName(Constants.XML_ELEMENT_NODE_BOOK);
             bool isItemFound = false;

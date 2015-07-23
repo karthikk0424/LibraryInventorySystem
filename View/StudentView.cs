@@ -46,7 +46,7 @@ namespace LibraryInventorySystem.View
                     Book.Borrow();
                     break;
                 case 4:
-                    Utils.PrintRow();
+                    Book.RequestNewBook();                    
                     break;
                 case 5:
                     OnCloseView();
