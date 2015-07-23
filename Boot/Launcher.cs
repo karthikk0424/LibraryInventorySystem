@@ -12,8 +12,7 @@ namespace LibraryInventorySystem.Boot
             Console.Title = "Shallow Valley";
             string consoleName = "++++ Shallow Valley Console ++++";
             Console.WriteLine(consoleName);
-            WelcomeScreen welcome = new WelcomeScreen();
-            welcome.InitWelcomeScreen();
+            WelcomeScreen.Display();
             Console.ReadKey(true);
         }
     }
