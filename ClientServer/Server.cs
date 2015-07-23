@@ -23,7 +23,7 @@ namespace LibraryInventorySystem.ClientServer
             catch (Exception e)
             {
                 Console.WriteLine("{0} Exception", e);
-                Console.WriteLine("Please check if the computer is connected to the internet");
+                Console.WriteLine("\n\nPlease check if the computer is connected to the internet");
             }        
         }        
     }
