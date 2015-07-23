@@ -23,8 +23,7 @@ namespace LibraryInventorySystem.Books
             Console.Write("Enter Book name: ");
             string bookName = Console.ReadLine();
 
-            Console.Write("Enter the serial number: ");
-            string serialNumber = Console.ReadLine();
+            int serialNumber = LibraryController.GetRandomSerialNumber();
 
             Console.Write("Enter the Author name: ");
             string authorName = Console.ReadLine();
@@ -46,6 +45,8 @@ namespace LibraryInventorySystem.Books
             doc.Element(Constants.XML_ROOT_ELEMENT).Add(root);
             doc.Save(Constants.BOOKS_XML_FILE);
             */
+            Console.Write("Enter the count: ");
+            string bookCount = Console.ReadLine();
 
             XmlDocument document = LibraryController.LoadDocument();
             foreach (XmlNode node in LibraryController.GetXMLNodeList())
@@ -53,7 +54,7 @@ namespace LibraryInventorySystem.Books
                 if (node.Attributes[Constants.BOOK_SERIAL_NUMBER].Value == serialNumber.ToString())
                 {
                     int count = Int32.Parse(node.Attributes[Constants.BOOK_AVAILABILITY].Value);
-                    count++;
+                    count = count + Int32.Parse(bookCount);
                     node.Attributes[Constants.BOOK_AVAILABILITY].Value = count.ToString();
                     LibraryController.SaveBookDocument();
                     return;
@@ -63,20 +64,21 @@ namespace LibraryInventorySystem.Books
             XmlElement root = document.CreateElement(Constants.XML_ELEMENT_NODE_BOOK);
             XmlAttribute a_bookname = document.CreateAttribute(Constants.BOOK_NAME);
             a_bookname.Value = bookName;
+            XmlAttribute a_bookCount = document.CreateAttribute(Constants.BOOK_AVAILABILITY);
+            a_bookCount.Value = bookCount;
             XmlAttribute a_serialNumber = document.CreateAttribute(Constants.BOOK_SERIAL_NUMBER);
-            a_serialNumber.Value = serialNumber;
+            a_serialNumber.Value = serialNumber.ToString();
             XmlAttribute a_authorName = document.CreateAttribute(Constants.BOOK_AUTHOR_NAME);
             a_authorName.Value = authorName;
+            
 
             root.Attributes.Append(a_bookname);
+            root.Attributes.Append(a_bookCount);
             root.Attributes.Append(a_serialNumber);
             root.Attributes.Append(a_authorName);
 
             document.DocumentElement.AppendChild(root);
-            LibraryController.SaveBookDocument();
-
-            //Find book and increament book count => A_Assignment
-
+            LibraryController.SaveBookDocument();            
         }
 
         public static void Delete()
@@ -211,8 +213,92 @@ namespace LibraryInventorySystem.Books
 
         public static void RequestNewBook(string BookName, string AuthorName, int serial = 0)
         { 
-            
+            /*
+             * Create new node
+             * Get bookname and author from student
+             * Add new book
+             * Get Serial number (parse xml serial and generate a unique one)
+             * 
+             */
+            Console.Write("Enter Book name: ");
+            string bookName = Console.ReadLine();
+
+            Console.Write("Enter the serial number: ");
+            string serialNumber = Console.ReadLine();
+
+            Console.Write("Enter the Author name: ");
+            string authorName = Console.ReadLine();
+
+            Console.Write("Enter the count: ");
+            string bookCount = Console.ReadLine();
+
+            XmlDocument document = LibraryController.LoadDocument();
+            XmlElement root = document.CreateElement(Constants.XML_NODE_NEW_REQUEST);
+
+            XmlAttribute a_bookname = document.CreateAttribute(Constants.BOOK_NAME);
+            a_bookname.Value = bookName;
+
+            XmlAttribute a_bookCount = document.CreateAttribute(Constants.BOOK_AVAILABILITY);
+            a_bookCount.Value = bookCount.ToString();
+
+            XmlAttribute a_serialNumber = document.CreateAttribute(Constants.BOOK_SERIAL_NUMBER);
+            a_serialNumber.Value = serial.ToString();
+
+            XmlAttribute a_authorName = document.CreateAttribute(Constants.BOOK_AUTHOR_NAME);
+            a_authorName.Value = authorName;
+
+            root.Attributes.Append(a_bookname);
+            root.Attributes.Append(a_serialNumber);
+            root.Attributes.Append(a_bookCount);
+            root.Attributes.Append(a_authorName);
+
+            document.DocumentElement.AppendChild(root);
+            document.Save(Constants.XML_FILE_NAME_BOOKS);
         }
+
+        public static void Borrow()
+        {
+            Console.WriteLine("Enter the serial number to borrow book");
+
+            int serial = Utils.OptionSelection(9999);
+            XmlDocument document = new XmlDocument();
+            document.Load(Constants.XML_FILE_NAME_BOOKS);
+
+            XmlNodeList nodes = document.GetElementsByTagName(Constants.XML_ELEMENT_NODE_BOOK);
+            bool isItemFound = false;
+            int numberOfBook = 1;
+
+            foreach (XmlNode node in nodes)
+            {
+                if (node.Attributes[Constants.BOOK_SERIAL_NUMBER].Value == serial.ToString())
+                {
+                    isItemFound = true;
+                    Console.WriteLine("\nBook Requested");
+                    Console.WriteLine("---------------");
+                    Console.WriteLine("Name\t\t: " + node.Attributes[Constants.BOOK_NAME].Value);
+                    Console.WriteLine("Serial Number\t: " + node.Attributes[Constants.BOOK_SERIAL_NUMBER].Value);
+                    numberOfBook = Int32.Parse(node.Attributes[Constants.BOOK_AVAILABILITY].Value);
+                    if (numberOfBook > 0)
+                    {
+                        numberOfBook--;
+                    }
+                    else
+                    {
+                        Console.WriteLine("The requested book is not available");
+                        return;
+                    }
+                    node.Attributes[Constants.BOOK_AVAILABILITY].Value = numberOfBook.ToString();
+                    LibraryController.SaveBookDocument();
+
+                    Console.WriteLine("Author Name\t: " + node.Attributes[Constants.BOOK_AUTHOR_NAME].Value);
+                }
+            }
+            if (!isItemFound)
+            {
+                Console.WriteLine("Oops, No book is found under the given serial number");
+            }
+        }
+
 
         public static void BorrowBook()
         {
