@@ -45,9 +45,6 @@ namespace LibraryInventorySystem.Controller
             {
                 CreateStudentXMLData();
             }
-
-            //Security.Encryption.Encrypt(LoadDocument());
-            //Security.Encryption.Encrypt(LoadDocument(Constants.XML_FILE_NAME_STUDENTS));
         }
 
         public static void FlushXMLData()
@@ -66,8 +63,7 @@ namespace LibraryInventorySystem.Controller
             students[1] = new StudentController.Student("Karthik", 21126, "B.Tech IT");
             students[2] = new StudentController.Student("Padma", 21136, "B.Tech IT");
 
-            //StringBuilder builder = new StringBuilder();
-            using (XmlWriter writer = XmlWriter.Create(Constants.XML_FILE_NAME_STUDENTS)) //(Constants.XML_FILE_NAME_STUDENTS))
+            using (XmlWriter writer = XmlWriter.Create(Constants.XML_FILE_NAME_STUDENTS))
             {
                 writer.WriteStartDocument();
                 writer.WriteWhitespace("\n");
@@ -89,15 +85,6 @@ namespace LibraryInventorySystem.Controller
                 writer.WriteEndDocument();
                 writer.Close();                
             }
-
-            File.Encrypt(Constants.XML_FILE_NAME_STUDENTS);
-
-            //string text = Security.Encryption.Encrypt(builder.ToString());
-
-            //if (!File.Exists(Constants.XML_FILE_NAME_STUDENTS))
-            //{
-            //    File.WriteAllText(Constants.XML_FILE_NAME_STUDENTS, text);
-            //}
         }
 
         public static void CreateDefaultXMLData()

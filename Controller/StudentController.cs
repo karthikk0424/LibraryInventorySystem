@@ -33,8 +33,6 @@ namespace LibraryInventorySystem.Controller
         {
             int number = Utils.OptionSelection(99999, "Enter the Student number to continue: ");
 
-            Security.Encryption.Decrypt(Constants.XML_FILE_NAME_STUDENTS);
-
             XmlDocument document = LibraryController.LoadDocument(Constants.XML_FILE_NAME_STUDENTS);            
 
             foreach (XmlNode node in document.GetElementsByTagName(Constants.XML_ELEMENT_NODE_STUDENT))
