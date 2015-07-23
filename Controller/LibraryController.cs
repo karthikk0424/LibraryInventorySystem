@@ -45,6 +45,9 @@ namespace LibraryInventorySystem.Controller
             {
                 CreateStudentXMLData();
             }
+
+            //Security.Encryption.Encrypt(LoadDocument());
+            //Security.Encryption.Encrypt(LoadDocument(Constants.XML_FILE_NAME_STUDENTS));
         }
 
         public static void FlushXMLData()
@@ -63,7 +66,8 @@ namespace LibraryInventorySystem.Controller
             students[1] = new StudentController.Student("Karthik", 21126, "B.Tech IT");
             students[2] = new StudentController.Student("Padma", 21136, "B.Tech IT");
 
-            using (XmlWriter writer = XmlWriter.Create(Constants.XML_FILE_NAME_STUDENTS))
+            //StringBuilder builder = new StringBuilder();
+            using (XmlWriter writer = XmlWriter.Create(Constants.XML_FILE_NAME_STUDENTS)) //(Constants.XML_FILE_NAME_STUDENTS))
             {
                 writer.WriteStartDocument();
                 writer.WriteWhitespace("\n");
@@ -77,15 +81,23 @@ namespace LibraryInventorySystem.Controller
                     writer.WriteAttributeString(Constants.STUDENT_NAME, student.m_Name);
                     writer.WriteAttributeString(Constants.STUDENT_NUMBER, student.m_StudentNumber.ToString());
                     writer.WriteAttributeString(Constants.STUDENT_DEPARTMENT, student.m_DeptName);
-
+                   
                     writer.WriteEndElement();
                     writer.WriteWhitespace("\n");
                 }
-
                 writer.WriteEndElement();
                 writer.WriteEndDocument();
-                writer.Close();
+                writer.Close();                
             }
+
+            File.Encrypt(Constants.XML_FILE_NAME_STUDENTS);
+
+            //string text = Security.Encryption.Encrypt(builder.ToString());
+
+            //if (!File.Exists(Constants.XML_FILE_NAME_STUDENTS))
+            //{
+            //    File.WriteAllText(Constants.XML_FILE_NAME_STUDENTS, text);
+            //}
         }
 
         public static void CreateDefaultXMLData()
@@ -157,6 +169,23 @@ namespace LibraryInventorySystem.Controller
             }
         }
 
+        public static int GetRandomSerialNumber()
+        {
+            Random rand = new Random();
+            int serial = 0;
+            bool valid = false;
+            LibraryController.LoadDocument();
+            do
+            {
+                serial = rand.Next(1, 9999);
+                foreach (XmlNode node in LibraryController.GetXMLNodeList())
+                {
+                    valid = node.Attributes[Constants.BOOK_SERIAL_NUMBER].Value != serial.ToString();
+                }
+            } while (!valid);
+
+            return serial;
+        }
         #region XmlDocument helper methods
 
         private static XmlDocument m_document = null;
@@ -166,7 +195,6 @@ namespace LibraryInventorySystem.Controller
             {
                 m_document = new XmlDocument();
                 m_document.Load(documentName);
-
             }
             return m_document;
         }
