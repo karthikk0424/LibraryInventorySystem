@@ -19,6 +19,7 @@ namespace LibraryInventorySystem.View
                 if (authType == eAuthenticationType.ADMIN && result == eAuthenticationResults.Success)
                 {
                     Display();
+                    OnOpenView();
                 }
             };
         }
@@ -26,6 +27,7 @@ namespace LibraryInventorySystem.View
         private const string NEW_APPROVALS = "(new)"; // Make this appear if new approvals are required
         public static void Display()
         {
+            
             Console.Clear();
             Console.WriteLine("\nAdmin Menu");
             Console.WriteLine("--------------");
@@ -35,8 +37,9 @@ namespace LibraryInventorySystem.View
             Console.WriteLine(" 4 - Delete Book");
             Console.WriteLine(" 5 - Modify Book");
             Console.WriteLine(" 6 - Awaiting approvals");
+            Console.WriteLine(" 7 - Back");
 
-            int selection = Utils.OptionSelection(6);
+            int selection = Utils.OptionSelection(7);
 
             switch(selection)
             {
@@ -58,7 +61,12 @@ namespace LibraryInventorySystem.View
                 case 6:
                     Book.ListAwaitingApprovals();
                     break;
+                case 7:
+                    OnCloseView();
+                    break;
             }
+            Console.ReadKey(true);
+            Display();
         }
     }
 }

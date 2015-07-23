@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using LibraryInventorySystem.Boot;
 
 namespace LibraryInventorySystem.View
 {
@@ -9,12 +10,12 @@ namespace LibraryInventorySystem.View
     {
         protected static void OnOpenView()
         {
-            System.Diagnostics.Debug.Write("A View is opened");
+               
         }
 
         protected static void OnCloseView()
         {
-            System.Diagnostics.Debug.Write("A View is Closed");
+            WelcomeScreen.Display();
         }
     }
 }
