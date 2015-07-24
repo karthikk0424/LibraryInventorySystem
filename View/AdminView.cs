@@ -37,9 +37,10 @@ namespace LibraryInventorySystem.View
             Console.WriteLine(" 4 - Delete Book");
             Console.WriteLine(" 5 - Modify Book");
             Console.WriteLine(" 6 - Awaiting approvals");
-            Console.WriteLine(" 7 - Back");
+            Console.WriteLine(" 7 - Book Requests - beta");
+            Console.WriteLine(" 8 - Back");
 
-            int selection = Utils.OptionSelection(7);
+            int selection = Utils.OptionSelection(8);
 
             switch(selection)
             {
@@ -62,6 +63,9 @@ namespace LibraryInventorySystem.View
                     Book.ListAwaitingApprovals();
                     break;
                 case 7:
+                    Book.ShowRequestedBooks();
+                    break;
+                case 8:
                     OnCloseView();
                     break;
             }

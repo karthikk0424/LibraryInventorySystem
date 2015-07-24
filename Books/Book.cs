@@ -225,24 +225,17 @@ namespace LibraryInventorySystem.Books
             
             Console.Write("Enter the Author name: ");
             string authorName = Console.ReadLine();
-
-            Console.Write("Enter the count: ");
-            string bookCount = Console.ReadLine();
-
+            
             XmlDocument document = LibraryController.LoadDocument();
             XmlElement root = document.CreateElement(Constants.XML_NODE_NEW_REQUEST);
 
             XmlAttribute a_bookname = document.CreateAttribute(Constants.BOOK_NAME);
             a_bookname.Value = bookName;
-
-            XmlAttribute a_bookCount = document.CreateAttribute(Constants.BOOK_AVAILABILITY);
-            a_bookCount.Value = bookCount.ToString();
-            
+                        
             XmlAttribute a_authorName = document.CreateAttribute(Constants.BOOK_AUTHOR_NAME);
             a_authorName.Value = authorName;
 
             root.Attributes.Append(a_bookname);
-            root.Attributes.Append(a_bookCount);
             root.Attributes.Append(a_authorName);
 
             document.DocumentElement.AppendChild(root);
@@ -345,6 +338,33 @@ namespace LibraryInventorySystem.Books
                     node.Attributes[Constants.BOOK_AUTHOR_NAME].Value
                 };
                 Utils.PrintRow(rowToPrint);
+            }
+        }
+
+        public static void ShowRequestedBooks()
+        {
+            XmlDocument document = LibraryController.LoadDocument();
+            XmlNodeList nodeList = LibraryController.GetXMLNodeList(Constants.XML_NODE_NEW_REQUEST);
+            if (nodeList.Count == 0)
+            {
+                Console.WriteLine("\nNo request is found");
+                return;
+            }
+            string[] rowToPrint = new string[] { "Book Name", "Author name" };
+            Utils.PrintRow(rowToPrint);
+            rowToPrint = new string[] { "--------------------------------------------------------------------------------------" };
+            Utils.PrintRow(rowToPrint);
+
+            foreach (XmlNode node in nodeList)
+            {
+                if (node.Name == Constants.XML_NODE_NEW_REQUEST)
+                {
+                    rowToPrint = new string[] { 
+                        node.Attributes[Constants.BOOK_NAME].Value, 
+                        node.Attributes[Constants.BOOK_AUTHOR_NAME].Value
+                    };
+                    Utils.PrintRow(rowToPrint);
+                }
             }
         }
 
