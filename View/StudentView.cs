@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml;
 using LibraryInventorySystem.Books;
 using LibraryInventorySystem.Menus;
+using LibraryInventorySystem.Controller;
 
 namespace LibraryInventorySystem.View
 {
@@ -19,6 +20,8 @@ namespace LibraryInventorySystem.View
                     Display();
                 }
             };
+
+            PasswordMenu.ValidateUser(eAuthenticationType.STUDENT, StudentController.ValidateStudent());  
         }
 
         private static void Display()

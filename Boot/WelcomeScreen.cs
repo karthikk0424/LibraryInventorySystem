@@ -24,14 +24,11 @@ namespace LibraryInventorySystem.Boot
 
             switch (selection)
                 {
-                    case 1:
-                        Console.WriteLine("\n**** Authentication is required for Admin mode ****");            
-                        AdminView.Init();
-                        PasswordMenu.ValidateUser(eAuthenticationType.ADMIN);       
+                    case 1:          
+                        AdminView.Init();    
                         break;
                     case 2:
                         StudentView.Init();
-                        PasswordMenu.ValidateUser(eAuthenticationType.STUDENT); 
                         break;
                 }
 

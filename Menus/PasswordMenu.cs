@@ -23,31 +23,19 @@ namespace LibraryInventorySystem.Menus
         public delegate void AuthencationResult(eAuthenticationResults result, eAuthenticationType authType);
         public static AuthencationResult authenticationResult;
 
-        public static bool ValidateUser(eAuthenticationType type)
+        public static void ValidateUser(eAuthenticationType type, bool result)
         {
-            bool isValidCredential = false;
-
-            switch (type)
-            { 
-                case eAuthenticationType.ADMIN:                    
-                    isValidCredential = AdminController.ValidateAdmin(); 
-                    break;
-                case eAuthenticationType.STUDENT:
-                    isValidCredential = StudentController.ValidateStudent();
-                    break;
-            }
+            bool isValidCredential = result;
 
             if (isValidCredential)
             {
                 authenticationResult(eAuthenticationResults.Success, type);
-                return true;
             }
             else
             {
                 Console.WriteLine("Authentication failed, Incorrect username or password");
                 authenticationResult(eAuthenticationResults.Failed, type);
             }
-            return false;
         }
     }
 }

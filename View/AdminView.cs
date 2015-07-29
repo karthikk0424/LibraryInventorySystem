@@ -7,6 +7,7 @@ using LibraryInventorySystem.Books;
 using System.Xml.Linq;
 using System.Xml;
 using System.Xml.XPath;
+using LibraryInventorySystem.Controller;
 
 namespace LibraryInventorySystem.View
 {
@@ -19,9 +20,11 @@ namespace LibraryInventorySystem.View
                 if (authType == eAuthenticationType.ADMIN && result == eAuthenticationResults.Success)
                 {
                     Display();
-                    OnOpenView();
                 }
             };
+
+            Console.WriteLine("\n**** Authentication is required for Admin mode ****");  
+            PasswordMenu.ValidateUser(eAuthenticationType.ADMIN, AdminController.ValidateAdmin());
         }
 
         private const string NEW_APPROVALS = "(new)"; // Make this appear if new approvals are required
